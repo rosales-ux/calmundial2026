@@ -8,8 +8,8 @@
 <meta name="apple-mobile-web-app-title" content="Mundial 2026">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#1c1c1e">
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="manifest" href="/calmundial2026/manifest.json">
+<link rel="apple-touch-icon" href="/calmundial2026/icon-192.png">
 <title>Mundial FIFA 2026 · Guatemala</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -408,7 +408,7 @@ fetchScores();
 
 // Service Worker
 if ("serviceWorker" in navigator) {
-  const base = location.pathname.replace(/\/[^\/]*$/, "") || "/";
+  const base = "/calmundial2026";
   navigator.serviceWorker.register(base + "/sw.js").catch(() => {});
 }
  // 1 llamada inicial al abrir la app
