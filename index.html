@@ -404,12 +404,15 @@ async function fetchScores(){
 
 // ── Init ─────────────────────────────────────────────────────
 buildPills();buildDiaPills();render();
-fetchScores(); // 1 llamada inicial al abrir la app
+fetchScores();
 
-// Service Worker offline
-if("serviceWorker" in navigator){
-  const sw=`const C="mundial2026-v3";self.addEventListener("install",e=>e.waitUntil(caches.open(C).then(c=>c.add("/"))));self.addEventListener("fetch",e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(res=>{const cl=res.clone();caches.open(C).then(c=>c.put(e.request,cl));return res;}))))`;
-  navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw],{type:"application/javascript"}))).catch(()=>{});
+// Service Worker
+if ("serviceWorker" in navigator) {
+  const base = location.pathname.replace(/\/[^\/]*$/, "") || "/";
+  navigator.serviceWorker.register(base + "/sw.js").catch(() => {});
+}
+ // 1 llamada inicial al abrir la app
+
 }
 </script>
 </body>
