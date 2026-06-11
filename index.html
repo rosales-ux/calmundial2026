@@ -88,7 +88,7 @@ body{background:#000;color:#fff}
     <p>Calendario de transmisión · Guatemala</p>
     <div class="live-dot" id="liveDot" style="display:none"><span></span>EN VIVO</div>
   </div>
-  <div class="api-status" id="apiStatus">Cargando resultados…</div>
+  <div class="api-status" id="apiStatus">Mundial inicia el 11 Jun</div>
 </div>
 <div class="filters" id="mainFilters">
   <div class="search-row">
@@ -342,14 +342,16 @@ function scheduleNextFetch(hasLive){
 async function fetchScores(){
   const today=todayDateStr();
   try{
-    const url=`https://v3.football.api-sports.io/fixtures?league=${LEAGUE_ID}&season=${SEASON}&date=${today}`;
-    const res=await fetch(url,{headers:{"x-apisports-key":API_KEY}});
+    const apiUrl=`https://v3.football.api-sports.io/fixtures?league=${LEAGUE_ID}&season=${SEASON}&date=${today}`;
+    const res=await fetch(`https://corsproxy.io/?${encodeURIComponent(apiUrl)}`,{
+      headers:{"x-apisports-key":API_KEY,"x-rapidapi-key":API_KEY}
+    });
     const data=await res.json();
 
     if(!data.response||data.response.length===0){
       hasActiveToday=false;
       scheduleNextFetch(false);
-      setStatus("Sin partidos hoy");
+      setStatus("Mundial inicia el 11 Jun · sin marcadores aún");
       return;
     }
 
@@ -396,8 +398,7 @@ async function fetchScores(){
 
   }catch(e){
     console.warn("API error:",e);
-    setStatus("Error al conectar con la API");
-    // Reintentar en 5 min si falla
+    setStatus("Marcadores disponibles cuando inicien los juegos");
     if(hasActiveToday) refreshTimer=setTimeout(fetchScores,5*60*1000);
   }
 }
@@ -410,9 +411,6 @@ fetchScores();
 if ("serviceWorker" in navigator) {
   const base = "/calmundial2026";
   navigator.serviceWorker.register(base + "/sw.js").catch(() => {});
-}
- // 1 llamada inicial al abrir la app
-
 }
 </script>
 </body>
